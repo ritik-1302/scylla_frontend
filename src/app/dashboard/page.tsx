@@ -53,9 +53,6 @@ export default function Page() {
           </div>
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div> */}
-        <h1>
-          Hello World
-        </h1>
       </SidebarInset>
     </SidebarProvider>
   )
