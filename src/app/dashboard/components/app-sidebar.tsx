@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import {
   Bolt,
@@ -14,6 +13,7 @@ import {
 import { NavMain } from "@/app/dashboard/components/nav-main"
 import { NavProjects } from "@/app/dashboard/components/nav-projects"
 import { NavUser } from "@/app/dashboard/components/nav-user"
+import { ModeToggle } from "./dark-mode-toggle"
 import {
   Sidebar,
   SidebarContent,
@@ -24,8 +24,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from "@/components/ui/sidebar"
-
-// This is sample data.
 const data = {
   user: {
     name: "Admin",
@@ -41,15 +39,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Front Desk",
-          url: "#",
-        },
-        {
-          title: "Kitchen",
-          url: "#",
-        },
-        {
-          title: "House Keeping",
+          title: "Tickets",
           url: "#",
         },
   
@@ -127,6 +117,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">Scylla</span>
                   <span className="truncate text-xs">Resort</span>
+                </div>
+                <div>
+                  <ModeToggle />
                 </div>
               </a>
             </SidebarMenuButton>
