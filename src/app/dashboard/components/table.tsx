@@ -18,123 +18,78 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { TicketsProps } from "@/interfaces/ticket-interface";
+import { User, Info, FileText } from "lucide-react";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
-export function TableDemo() {
-  const handleOnClick = () => {
-    console.log("clicked");
-  };
+export function TableDemo({ tickets }: TicketsProps) {
   return (
     <Table>
       <TableCaption>A list of your recent Tickets.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Ticket</TableHead>
-          <TableHead>Room</TableHead>
+          <TableHead>Ticket ID</TableHead>
+          <TableHead>Room No.</TableHead>
           <TableHead>Department</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>Device</TableHead>
           <TableHead>Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice, index) => (
+        {tickets.map((ticket, index) => (
           <Dialog key={index}>
             <DialogTrigger asChild>
-              <TableRow key={invoice.invoice} onClick={handleOnClick}>
-                <TableCell className="font-medium">{invoice.invoice}</TableCell>
-                <TableCell>{invoice.paymentStatus}</TableCell>
-                <TableCell>{invoice.paymentMethod}</TableCell>
-                <TableCell>{invoice.totalAmount}</TableCell>
-                <TableCell>{invoice.totalAmount}</TableCell>
+              <TableRow key={index}>
+                <TableCell className="font-medium">{ticket._id}</TableCell>
+                <TableCell>202</TableCell>
+                <TableCell>{ticket.type}</TableCell>
+                <TableCell>{ticket.device.type}</TableCell>
+                <TableCell>{ticket.status}</TableCell>
               </TableRow>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
                 <DialogTitle>Ticket</DialogTitle>
-                <DialogDescription># 1234556</DialogDescription>
+                <DialogDescription>{ticket._id}</DialogDescription>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-6 py-6">
+                <div className="flex items-start space-x-2">
+                  <User className="w-5 h-5 text-gray-500" />{" "}
+                  {/* Icon for Guest Details */}
                   <div>
-                    <h3 className="font-semibold">Guest Details</h3>
+                    <h3 className="font-semibold mb-2">Guest Details</h3>
                     <p>Room: 201</p>
                     <p>Name: Ritik Shah</p>
                     <p>Contact: 9805278485</p>
                   </div>
+                </div>
+
+                <div className="flex items-start space-x-2">
+                  <Info className="w-5 h-5 text-gray-500" />{" "}
+                  {/* Icon for Ticket Info */}
                   <div>
-                    <h3 className="font-semibold">Ticket Info</h3>
-                    <p>Created: 2024-01-10 02:15 PM</p>
-                    <p>Department: House Keeping</p>
-                    <p>Priority: low</p>
+                    <h3 className="font-semibold mb-2">Ticket Info</h3>
+                    <p>
+                      Created: {new Date(ticket.createdAt).toLocaleString()}
+                    </p>
+                    <p>Department: {ticket.type}</p>
+                    <p>Device: {ticket.device.type}</p>
+                    <p>Device-id: {ticket.device._id}</p>
                   </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold">Description</h3>
-                  <p>Hello this is description</p>
+              </div>
+
+              <div className="mt-6">
+                <div className="flex items-start space-x-2">
+                  <FileText className="w-5 h-5 text-gray-500" />{" "}
+                  <div>
+                    <h3 className="font-semibold mb-2">Description</h3>
+                    <p>Send Housekeeping to the room</p>
+                  </div>
                 </div>
-                <h3 className="font-semibold">Activity Log</h3>
-                <ScrollArea className="h-[200px] w-full rounded-md border p-4">
-                  {/* {ticket.activityLog.map((activity, index) => (
-                    <div key={index} className="mb-4 last:mb-0">
-                      <div className="flex justify-between text-sm">
-                        <span className="font-medium">{activity.user}</span>
-                        <span className="text-muted-foreground">
-                          {activity.timestamp}
-                        </span>
-                      </div>
-                      <p className="mt-1">{activity.content}</p>
-                    </div>
-                  ))} */}
-                </ScrollArea>
               </div>
 
               <DialogFooter>
-                <Button type="submit">Save changes</Button>
+                <Button type="submit">Mark as Closed</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>

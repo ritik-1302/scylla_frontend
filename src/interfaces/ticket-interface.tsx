@@ -7,6 +7,8 @@ export type Ticket = {
       type: string;
     };
     status: string;
+    createdAt:number;
+    updatedAt:number;
   };
   
  export interface TicketsProps {

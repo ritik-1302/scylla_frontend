@@ -23,9 +23,12 @@ export default function Page() {
   const [tickets, setTickets] = useState<Ticket[] | []>([]);
   const wsRef = useRef<WebSocket | null>(null);
   const [loading, setLoading] = useState(false);
+  const reconnectRef = useRef(false); 
+  const pingIntervalRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (!wsRef.current) {
+
+  const connectWebSocket = () => {
+    if (!wsRef.current || wsRef.current.readyState === WebSocket.CLOSED) {
       const ws = new WebSocket(webSocketUrl);
       wsRef.current = ws;
 
@@ -33,17 +36,31 @@ export default function Page() {
         console.log("Connected to WebSocket");
         setLoading(true);
         ws.send(JSON.stringify({ action: "getTickets" }));
+        reconnectRef.current = false; // Reset reconnect flag
+
+        // Start pinging the server every 30 seconds
+        pingIntervalRef.current = window.setInterval(() => {
+          if (wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(
+              JSON.stringify({ "action": "default", "message": "hello" })
+            );
+            console.log("Ping sent");
+          }
+        }, 30000); // 30 seconds ping interval
       };
 
       ws.onmessage = (event) => {
-        setLoading(true);
         console.log("Message received:", event.data);
         try {
           const data = JSON.parse(event.data);
           // Assuming the message contains a list of tickets
           if (data.tickets) {
-            setTickets((prevTickets) => [...prevTickets, ...data.tickets]);
+            setTickets((prevTickets) => [...data.tickets, ...prevTickets]);
           }
+        
+          // if (data.type === "pong") {
+          //   console.log("Pong received");
+          // }
         } catch (error) {
           console.error("Error parsing message data:", error);
         } finally {
@@ -51,15 +68,41 @@ export default function Page() {
         }
       };
 
-      ws.onclose = () => {
-        console.log("WebSocket connection closed");
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        ws.close(); // Close the socket and trigger reconnection
       };
 
-      return () => {
-        ws.close();
+      ws.onclose = () => {
+        console.log("WebSocket connection closed");
+        if (!reconnectRef.current) {
+          reconnectRef.current = true;
+          setTimeout(connectWebSocket, 5000); // Reconnect after 5 seconds
+        }
+
+        // Clear ping interval if connection is closed
+        if (pingIntervalRef.current) {
+          clearInterval(pingIntervalRef.current);
+          pingIntervalRef.current = null;
+        }
       };
     }
+  };
+
+  useEffect(() => {
+    connectWebSocket();
+
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+      // Cleanup ping interval on component unmount
+      if (pingIntervalRef.current) {
+        clearInterval(pingIntervalRef.current);
+      }
+    };
   }, []);
+
   return (
     <SidebarProvider>
       <AppSidebar />
