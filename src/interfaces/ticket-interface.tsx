@@ -1,5 +1,5 @@
 export type Ticket = {
-    _id: string | null;
+    _id: string;
     type: string;
     device: {
       _id: string;

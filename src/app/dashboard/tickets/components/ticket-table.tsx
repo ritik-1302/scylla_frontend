@@ -20,8 +20,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { TicketsProps } from "@/interfaces/ticket-interface";
 import { User, Info, FileText } from "lucide-react";
+import { useWebSocket } from "@/hooks/use-web-socket";
+import { DialogClose } from "@radix-ui/react-dialog";
 
-export function TableDemo({ tickets }: TicketsProps) {
+export function TicketTable({ tickets }: TicketsProps) {
+  const { ws } = useWebSocket();
+
+  const handleMarkAsClosed = (ticketId: string) => {
+    ws?.send(
+      JSON.stringify({
+        action: "ticket",
+        requestName: "markTicketAsClosed",
+        query: {
+          ticket: {
+            id: ticketId,
+          },
+        },
+      })
+    );
+  };
+
   return (
     <Table>
       <TableCaption>A list of your recent Tickets.</TableCaption>
@@ -89,7 +107,14 @@ export function TableDemo({ tickets }: TicketsProps) {
               </div>
 
               <DialogFooter>
-                <Button type="submit">Mark as Closed</Button>
+                <DialogClose asChild>
+                  <Button
+                    type="submit"
+                    onClick={() => handleMarkAsClosed(ticket._id)}
+                  >
+                    Mark as Closed
+                  </Button>
+                </DialogClose>
               </DialogFooter>
             </DialogContent>
           </Dialog>

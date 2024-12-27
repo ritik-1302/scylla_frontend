@@ -1,7 +1,7 @@
 import { Ticket } from "@/interfaces/ticket-interface";
 import { TabsContent } from "@/components/ui/tabs";
 import StatsCard from "./stats-card";
-import { TableDemo } from "./table";
+import { TicketTable } from "./ticket-table";
 
 interface TabContentProps {
   value: string;
@@ -41,7 +41,7 @@ export default function TabContent({ value, tickets }: TabContentProps) {
               const differenceInMinutes = Math.floor(
                 differenceInMs / (1000 * 60)
               );
-              if (differenceInMinutes > 10) {
+              if (differenceInMinutes > 10 &&ticket.status==="Open") {
                 return true;
               } else {
                 return false;
@@ -51,7 +51,7 @@ export default function TabContent({ value, tickets }: TabContentProps) {
         />
       </div>
       <div>
-        <TableDemo
+        <TicketTable
           tickets={tickets.filter((ticket) => ticket.status == "Open")}
         />
       </div>

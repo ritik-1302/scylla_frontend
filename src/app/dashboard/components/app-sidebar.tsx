@@ -33,14 +33,18 @@ const data = {
   
   navMain: [
     {
-      title: "Resort",
-      url: "#",
+      title: "Dashboard",
+      url: "/dashboard",
       icon: Hotel,
       isActive: true,
       items: [
         {
           title: "Tickets",
-          url: "#",
+          url: "/dashboard/tickets",
+        },
+        {
+          title: "Channel Partners",
+          url: "/dashboard/channel-partners",
         },
   
       ],
