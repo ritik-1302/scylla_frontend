@@ -1,4 +1,4 @@
-
+"use client";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -15,8 +15,19 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import ConversationView from "./components/ConversationsView";
+import Loader from "./components/loader";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -38,6 +49,7 @@ export default function Page() {
             </Breadcrumb>
           </div>
         </header>
+        {loading ? <Loader /> : <ConversationView />}
       </SidebarInset>
     </SidebarProvider>
   );
