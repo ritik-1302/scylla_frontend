@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/app/dashboard/components/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import ChannelPartnerView from "./components/channel-partner-view";
+
 export default function Page() {
   return (
     <SidebarProvider>

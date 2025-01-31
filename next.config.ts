@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
       hostname: 'picsum.photos',
       port: '',
       pathname: '/seed/**'
+    },
+    {protocol: 'https',
+      hostname: 'logo.clearbit.com',
+      port: '',
+      pathname: '/**'
+
     }
   ]
   }

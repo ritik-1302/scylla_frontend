@@ -1,19 +1,19 @@
-"use client"
-import * as React from "react"
+"use client";
+import * as React from "react";
 import {
-  Bolt,
+  MessageCircle,
   CarTaxiFront,
   Command,
   Hotel,
   Settings2,
   Waves,
   WavesLadder,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@/app/dashboard/components/nav-main"
-import { NavProjects } from "@/app/dashboard/components/nav-projects"
-import { NavUser } from "@/app/dashboard/components/nav-user"
-import { ModeToggle } from "./dark-mode-toggle"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { ModeToggle } from "./dark-mode-toggle";
 import {
   Sidebar,
   SidebarContent,
@@ -22,15 +22,15 @@ import {
   SidebarRail,
   SidebarMenu,
   SidebarMenuItem,
-  SidebarMenuButton
-} from "@/components/ui/sidebar"
+  SidebarMenuButton,
+} from "@/components/ui/sidebar";
 const data = {
   user: {
     name: "Admin",
     email: "admin@scylla.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  
+
   navMain: [
     {
       title: "Dashboard",
@@ -46,21 +46,28 @@ const data = {
           title: "Channel Partners",
           url: "/dashboard/channel-partners",
         },
-  
+        {
+          title: "Rooms",
+          url: "/dashboard/rooms",
+        },
+        {
+          title: "Bookings",
+          url: "/dashboard/bookings",
+        },
       ],
     },
     {
-      title: "Automation",
+      title: "Whatsapp",
       url: "#",
-      icon: Bolt,
+      icon: MessageCircle,
       items: [
         {
-          title: "Whatsapp",
-          url: "#",
+          title: "Chats",
+          url: "/whatsapp/chats",
         },
         {
-          title: "Alexa",
-          url: "#",
+          title: "Promotional",
+          url: "/whatsapp/promotional",
         },
       ],
     },
@@ -105,12 +112,12 @@ const data = {
       icon: CarTaxiFront,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-           <SidebarHeader>
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
@@ -139,5 +146,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
