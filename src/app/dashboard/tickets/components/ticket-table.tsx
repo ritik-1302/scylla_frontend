@@ -20,24 +20,27 @@ import {
 import { Button } from "@/components/ui/button";
 import { TicketsProps } from "@/interfaces/ticket-interface";
 import { User, Info, FileText } from "lucide-react";
-import { useWebSocket } from "@/hooks/use-web-socket";
 import { DialogClose } from "@radix-ui/react-dialog";
 
+import { useWebSocket } from "@/context/webSocketContext";
+
 export function TicketTable({ tickets }: TicketsProps) {
-  const { ws } = useWebSocket();
+  const { sendMessage, webSocketState } = useWebSocket();
 
   const handleMarkAsClosed = (ticketId: string) => {
-    ws?.send(
-      JSON.stringify({
-        action: "ticket",
-        requestName: "markTicketAsClosed",
-        query: {
-          ticket: {
-            id: ticketId,
+    if (webSocketState === WebSocket.OPEN) {
+      sendMessage(
+        JSON.stringify({
+          action: "ticket",
+          requestName: "markTicketAsClosed",
+          query: {
+            ticket: {
+              id: ticketId,
+            },
           },
-        },
-      })
-    );
+        })
+      );
+    }
   };
 
   return (

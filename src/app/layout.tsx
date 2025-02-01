@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { WebSocketProvider } from "@/context/webSocketContext";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,10 +36,10 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-          
         >
-          {children}
+          <WebSocketProvider>{children}</WebSocketProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

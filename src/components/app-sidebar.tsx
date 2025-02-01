@@ -24,97 +24,108 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-const data = {
-  user: {
-    name: "Admin",
-    email: "admin@scylla.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
 
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: Hotel,
-      isActive: true,
-      items: [
-        {
-          title: "Tickets",
-          url: "/dashboard/tickets",
-        },
-        {
-          title: "Channel Partners",
-          url: "/dashboard/channel-partners",
-        },
-        {
-          title: "Rooms",
-          url: "/dashboard/rooms",
-        },
-        {
-          title: "Bookings",
-          url: "/dashboard/bookings",
-        },
-      ],
-    },
-    {
-      title: "Whatsapp",
-      url: "#",
-      icon: MessageCircle,
-      items: [
-        {
-          title: "Chats",
-          url: "/whatsapp/chats",
-        },
-        {
-          title: "Promotional",
-          url: "/whatsapp/promotional",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Role Assign",
-          url: "#",
-        },
-        {
-          title: "Contact",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Spa",
-      url: "#",
-      icon: Waves,
-    },
-    {
-      name: "Pool",
-      url: "#",
-      icon: WavesLadder,
-    },
-    {
-      name: "Taxi",
-      url: "#",
-      icon: CarTaxiFront,
-    },
-  ],
-};
+import { useWebSocket } from "@/context/webSocketContext";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { ticketNotificationCount, resetTicketNotificationCount } =useWebSocket();
+  const data = {
+    user: {
+      name: "Admin",
+      email: "admin@scylla.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: Hotel,
+        isActive: true,
+        badgeCount: ticketNotificationCount,
+        items: [
+          {
+            title: "Tickets",
+            url: "/dashboard/tickets",
+            badgeCount: ticketNotificationCount,
+            badgeCountResetFunction: resetTicketNotificationCount,
+          },
+          {
+            title: "Channel Partners",
+            url: "/dashboard/channel-partners",
+          },
+          {
+            title: "Rooms",
+            url: "/dashboard/rooms",
+          },
+          {
+            title: "Bookings",
+            url: "/dashboard/bookings",
+          },
+        ],
+      },
+      {
+        title: "Whatsapp",
+        url: "#",
+        icon: MessageCircle,
+        items: [
+          {
+            title: "Chats",
+            url: "/whatsapp/chats",
+            badgeCount: 0,
+            badgeCountResetFunction: () => {
+              console.log("YAAYYYYY");
+            },
+          },
+          {
+            title: "Promotional",
+            url: "/whatsapp/promotional",
+          },
+        ],
+      },
+      {
+        title: "Settings",
+        url: "#",
+        icon: Settings2,
+        items: [
+          {
+            title: "General",
+            url: "#",
+          },
+          {
+            title: "Role Assign",
+            url: "#",
+          },
+          {
+            title: "Contact",
+            url: "#",
+          },
+          {
+            title: "Limits",
+            url: "#",
+          },
+        ],
+      },
+    ],
+    projects: [
+      {
+        name: "Spa",
+        url: "#",
+        icon: Waves,
+      },
+      {
+        name: "Pool",
+        url: "#",
+        icon: WavesLadder,
+      },
+      {
+        name: "Taxi",
+        url: "#",
+        icon: CarTaxiFront,
+      },
+    ],
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

@@ -1,11 +1,10 @@
-
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -15,21 +14,26 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+  SidebarMenuBadge,
+} from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge";
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
+    badgeCount?: number;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+      title: string;
+      url: string;
+      badgeCount?: number;
+      badgeResetFunction?: () => void;
+    }[];
+  }[];
 }) {
   return (
     <SidebarGroup>
@@ -47,16 +51,39 @@ export function NavMain({
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  {item?.badgeCount === undefined || item?.badgeCount === 0 ? (
+                    <></>
+                  ) : (
+                    <SidebarMenuBadge className="ml-auto ">
+                      <Badge className="bg-sidebar-primary">
+                        {item?.badgeCount}
+                      </Badge>
+                    </SidebarMenuBadge>
+                  )}
+
+                  {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
+                      <SidebarMenuSubButton
+                        asChild
+                        onClick={subItem?.badgeResetFunction}
+                      >
                         <a href={subItem.url}>
                           <span>{subItem.title}</span>
+                          {subItem?.badgeCount === undefined ||
+                          subItem?.badgeCount === 0 ? (
+                            <></>
+                          ) : (
+                            <SidebarMenuBadge>
+                              <Badge className="dark:bg-sidebar-primary">
+                                {subItem?.badgeCount}
+                              </Badge>
+                            </SidebarMenuBadge>
+                          )}
                         </a>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -68,5 +95,5 @@ export function NavMain({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
